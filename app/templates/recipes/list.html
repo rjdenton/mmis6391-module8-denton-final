@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Recipes{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/recipes.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="recipes-container">
+    <h2>All Recipes</h2>
+
+    {% if 'user_id' in session %}
+    <div class="add-recipe-button">
+        <a href="{{ url_for('recipes.add_recipe') }}" class="btn">Add Recipe</a>
+    </div>
+    {% endif %}
+      <div class="recipes-list">
+        {% for recipe in recipes %}
+        <div class="recipe-card" data-recipe-id="{{ recipe['id'] }}">
+            {% if recipe['image_path'] %}
+            <img src="{{ url_for('static', filename=recipe['image_path'].replace('static/', '')) }}" alt="{{ recipe['title'] }}" class="recipe-image">
+            {% endif %}
+            <h3><a href="{{ url_for('recipes.view_recipe', recipe_id=recipe['id']) }}">{{ recipe['title'] }}</a></h3>
+            <p class="description">{{ recipe['description'] }}</p>
+            <p class="meal-type">{{ recipe['meal_type'] }}</p>
+            <p class="category">{{ recipe['category'] }}</p>
+            <p class="author">By: <strong>{{ recipe['username'] }}</strong></p>
+            {% if 'user_id' in session %}
+            <form method="post" class="favorite-form">
+                <button type="submit" class="favorite-btn" data-favorited="{{ recipe['is_favorite'] }}">
+                    {{ '⭐' if recipe['is_favorite'] else '☆' }}
+                </button>
+            </form>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='JS/favorites.js') }}"></script>
+{% endblock %}

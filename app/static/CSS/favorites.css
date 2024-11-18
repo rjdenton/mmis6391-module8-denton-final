@@ -1,0 +1,111 @@
+.favorites-container {
+    width: 90%;
+    margin: 20px auto;
+    max-width: 1200px;
+    text-align: center;
+}
+
+.favorites-container h2 {
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #34495e;
+}
+
+.recipes-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 10px;
+}
+
+.recipe-card {
+    background: linear-gradient(to bottom, #ffffff, #f7f7f7);
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.recipe-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.recipe-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    color: #34495e;
+}
+
+.recipe-card h3 a {
+    text-decoration: none;
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.recipe-card h3 a:hover {
+    text-decoration: underline;
+}
+
+.recipe-card .description {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: #7f8c8d;
+}
+
+.recipe-card .author {
+    font-size: 0.9rem;
+    color: #95a5a6;
+    margin-top: 10px;
+}
+
+/* Favorite Button Styling */
+.favorite-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #f1c40f; /* Gold for favorited */
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.favorite-btn:hover {
+    transform: scale(1.2);
+}
+
+.favorite-btn:focus {
+    outline: none;
+}
+
+.favorite-btn.favorited {
+    color: #f1c40f; /* Gold color */
+}
+
+.favorite-btn:not(.favorited) {
+    color: #bdc3c7; /* Grey for not favorited */
+}
+
+/* Button Styling */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #3498db;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.btn:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}

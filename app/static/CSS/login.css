@@ -1,0 +1,66 @@
+.form-container {
+    width: 400px; /* Fixed width for the form container */
+    margin: 50px auto; /* Center the form horizontally */
+    padding: 20px;
+    background: #f0f8ff;
+    border: 1px solid #ffd699;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center the text and form elements */
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ff8c00;
+}
+
+.form-container label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-container input {
+    width: 80%; /* Constrain input width */
+    max-width: 300px; /* Set a maximum width */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center; /* Center text inside inputs */
+}
+
+.form-container button {
+    width: 80%;
+    max-width: 300px;
+    padding: 10px;
+    background: #ffa500;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background: #e07a00;
+}
+
+.register-link, .login-link {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.register-link a, .login-link a {
+    color: #4682b4;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover, .login-link a:hover {
+    text-decoration: underline;
+}

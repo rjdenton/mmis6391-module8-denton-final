@@ -5,9 +5,13 @@ from .db_connect import close_db, get_db
 app = create_app()
 app.secret_key = 'your-secret'  # Replace with an environment variable
 
-# Register Blueprints
-# Example:  from app.blueprints.loan_amortization import loan_amortization
-#           app.register_blueprint(loan_amortization)
+from app.blueprints.users import users
+from app.blueprints.recipes import recipes
+from app.blueprints.favorites import favorites
+
+app.register_blueprint(users)
+app.register_blueprint(recipes)
+app.register_blueprint(favorites)
 
 from . import routes
 

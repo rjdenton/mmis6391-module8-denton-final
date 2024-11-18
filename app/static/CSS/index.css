@@ -1,0 +1,91 @@
+
+.hero {
+    background: linear-gradient(to bottom right, #ff9a76, #ff6b6b);
+    color: white;
+    text-align: center;
+    padding: 50px 20px;
+    border-radius: 12px;
+    margin: 20px auto;
+    max-width: 1200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.hero-buttons {
+    margin-top: 20px;
+}
+
+.hero-buttons .btn {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 16px;
+    text-decoration: none;
+    color: white;
+    background: #4caf50;
+    border-radius: 6px;
+    margin: 0 10px;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.hero-buttons .btn:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+}
+
+.hero-buttons .btn-secondary {
+    background: #3498db;
+}
+
+.hero-buttons .btn-secondary:hover {
+    background: #2980b9;
+}
+
+/* Features Section Styling */
+.features {
+    text-align: center;
+    margin: 40px auto;
+    max-width: 1200px;
+}
+
+.features h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.feature-item {
+    flex: 1 1 calc(30% - 20px);
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.feature-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.feature-item p {
+    font-size: 1rem;
+    color: #777;
+}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}My Favorites{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/favorites.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="favorites-container">
+    <h2>My Favorite Recipes</h2>
+
+    {% if favorites %}
+    <div class="recipes-list">
+        {% for recipe in favorites %}
+        <div class="recipe-card" data-recipe-id="{{ recipe['id'] }}">
+            <button
+                class="favorite-btn favorited"
+                data-favorited="true">
+                ⭐
+            </button>
+            <h3><a href="{{ url_for('recipes.view_recipe', recipe_id=recipe['id']) }}">{{ recipe['title'] }}</a></h3>
+            <p class="description">{{ recipe['description'] }}</p>
+            <p class="author">By: <strong>{{ recipe['username'] }}</strong></p>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>You have not favorited any recipes yet!</p>
+    <a href="{{ url_for('recipes.list_recipes') }}" class="btn">Browse Recipes</a>
+    {% endif %}
+</div>
+<script src="{{ url_for('static', filename='JS/favorites.js') }}"></script>
+{% endblock %}

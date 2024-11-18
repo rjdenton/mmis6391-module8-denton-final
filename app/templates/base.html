@@ -3,38 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Template Repository</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <title>{% block title %}Recipe Website{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}">
+    {% block styles %}{% endblock %}
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Template Repo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
+    <header>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('index') }}">🍴 RecipeBook</a>
         </div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('recipes.list_recipes') }}">Recipes</a></li>
+            {% if 'user_id' in session %}
+                <li><a href="{{ url_for('favorites.list_favorites') }}">Favorites</a></li>
+                <li><a href="{{ url_for('users.profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('users.logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('users.login') }}">Login</a></li>
+            {% endif %}
+        </ul>
     </nav>
+</header>
 
-    <!-- Content Block -->
-    <div class="container mt-4">
-        {% block content %}{% endblock %}
-    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <main>
+        {% block content %}
+        <!-- Page-specific content will go here -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 RecipeBook. All rights reserved.</p>
+    </footer>
+{% block scripts %}{% endblock %}
 </body>
 </html>
