@@ -14,7 +14,7 @@ def list_favorites():
     connection = get_db()
 
     query = """
-        SELECT recipes.id, recipes.title, recipes.description, users.username
+        SELECT recipes.id, recipes.title, recipes.description, users.username, recipes.image_path
         FROM favorites
         JOIN recipes ON favorites.recipe_id = recipes.id
         JOIN users ON recipes.user_id = users.id

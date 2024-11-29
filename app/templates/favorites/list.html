@@ -19,6 +19,9 @@
                 data-favorited="true">
                 ⭐
             </button>
+            {% if recipe.image_path %}
+            <img src="{{ url_for('static', filename=recipe.image_path.replace('static/', '')) }}" alt="{{ recipe.title }}" class="recipe-image">
+            {% endif %}
             <h3><a href="{{ url_for('recipes.view_recipe', recipe_id=recipe['id']) }}">{{ recipe['title'] }}</a></h3>
             <p class="description">{{ recipe['description'] }}</p>
             <p class="author">By: <strong>{{ recipe['username'] }}</strong></p>

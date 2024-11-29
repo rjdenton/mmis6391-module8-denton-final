@@ -66,16 +66,20 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    background: none;
-    border: none;
+    background: white; /* Add white background */
+    border: 1px solid #eaeaea; /* Subtle border to match the card */
     font-size: 24px;
     color: #f1c40f; /* Gold for favorited */
+    border-radius: 50%; /* Make it a circular button */
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s, background-color 0.2s;
+    padding: 2px; /* Adjust padding for better sizing */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow for a raised effect */
 }
 
 .favorite-btn:hover {
     transform: scale(1.2);
+    background-color: #f7f7f7; /* Light gray hover effect */
 }
 
 .favorite-btn:focus {
@@ -108,4 +112,15 @@
 .btn:hover {
     background: #2980b9;
     transform: translateY(-2px);
+}
+
+/* Recipe Image Styling */
+.recipe-card img.recipe-image {
+    width: 100%; /* Ensure the image fits within the card width */
+    height: auto; /* Maintain the aspect ratio */
+    max-height: 150px; /* Limit the image height to prevent oversized images */
+    object-fit: cover; /* Ensures the image fills the area without distortion */
+    border-radius: 8px; /* Add a slight rounding to the image corners */
+    margin-bottom: 15px; /* Add spacing between the image and other content */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visuals */
 }

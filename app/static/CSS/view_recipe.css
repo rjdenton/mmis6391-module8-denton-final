@@ -1,0 +1,112 @@
+/* General Container Styling */
+.recipe-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Header Styling */
+.recipe-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.recipe-header h1 {
+    font-size: 2.5rem;
+    color: #34495e;
+    margin: 15px 0;
+}
+
+.recipe-header .recipe-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Details Styling */
+.recipe-details {
+    margin-bottom: 20px;
+}
+
+.recipe-details p {
+    font-size: 1rem;
+    color: #7f8c8d;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.recipe-details h2 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.recipe-details pre {
+    background: #ecf0f1;
+    padding: 10px;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    font-size: 1rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+/* Actions Styling */
+.recipe-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Edit Button */
+.recipe-actions .edit-btn {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.recipe-actions .edit-btn:hover {
+    background-color: #2980b9;
+}
+
+/* Delete Button */
+.recipe-actions .delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.recipe-actions .delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Favorite Button Styling */
+.favorite-btn {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, color 0.3s ease-in-out;
+    color: #bdc3c7; /* Grey for not favorited */
+}
+
+.favorite-btn.favorited {
+    color: #e67e22; /* Gold for favorited */
+}
+
+.favorite-btn:hover {
+    transform: scale(1.3);
+}

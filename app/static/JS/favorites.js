@@ -3,13 +3,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     favoriteButtons.forEach(button => {
         button.addEventListener('click', async (event) => {
-            event.preventDefault();
+            event.preventDefault(); // Prevent the form from submitting normally
 
-            const recipeCard = button.closest('.recipe-card');
-            const recipeId = recipeCard.dataset.recipeId;
+            const recipeCard = button.closest('.recipe-card') || button.closest('.recipe-container');
+            const recipeId = recipeCard?.dataset.recipeId;
+            if (!recipeId) {
+                console.error('Recipe ID not found.');
+                return;
+            }
+
             const isFavorited = button.dataset.favorited === 'true';
 
-            // Send AJAX request to toggle favorite
             try {
                 const response = await fetch(`/recipes/favorite/${recipeId}`, {
                     method: 'POST',
@@ -20,12 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (response.ok) {
-                    const newState = !isFavorited;
+                    const data = await response.json();
+                    const newState = data.is_favorited;
                     button.dataset.favorited = newState.toString();
                     button.textContent = newState ? '⭐' : '☆';
                     button.classList.toggle('favorited', newState);
                 } else {
-                    console.error('Failed to toggle favorite');
+                    console.error('Failed to toggle favorite.');
                 }
             } catch (error) {
                 console.error('Error:', error);

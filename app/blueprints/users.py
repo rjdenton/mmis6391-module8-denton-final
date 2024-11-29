@@ -4,35 +4,55 @@ from app.db_connect import get_db
 
 users = Blueprint('users', __name__)
 
-
 @users.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
+        email = request.form['email']  # Capture the email field
         password = request.form['password']
         confirm_password = request.form['confirm_password']
 
-        if not username or not password:
-            flash("Username and password are required.", "danger")
+        if not username or not email or not password:
+            flash("Username, email, and password are required.", "danger")
             return redirect(url_for('users.register'))
 
         if password != confirm_password:
             flash("Passwords do not match.", "danger")
             return redirect(url_for('users.register'))
 
-        hashed_password = generate_password_hash(password)
-
         connection = get_db()
-        query = "INSERT INTO users (username, password) VALUES (%s, %s)"
+
+        # Check if the email already exists
+        query = "SELECT * FROM users WHERE email = %s"
         with connection.cursor() as cursor:
-            cursor.execute(query, (username, hashed_password))
+            cursor.execute(query, (email,))
+            user = cursor.fetchone()
+
+        if user:
+            flash("Email is already registered. Please use a different email.", "danger")
+            return redirect(url_for('users.register'))
+
+        # Check if the username already exists
+        query = "SELECT * FROM users WHERE username = %s"
+        with connection.cursor() as cursor:
+            cursor.execute(query, (username,))
+            user = cursor.fetchone()
+
+        if user:
+            flash("Username is already taken. Please choose a different username.", "danger")
+            return redirect(url_for('users.register'))
+
+        # Insert the new user into the database
+        hashed_password = generate_password_hash(password)
+        query = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
+        with connection.cursor() as cursor:
+            cursor.execute(query, (username, email, hashed_password))
         connection.commit()
 
         flash("Account created successfully! Please log in.", "success")
         return redirect(url_for('users.login'))
 
     return render_template("register.html")
-
 
 @users.route('/login', methods=['GET', 'POST'])
 def login():

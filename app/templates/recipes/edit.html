@@ -3,7 +3,7 @@
 {% block title %}Edit Recipe{% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='CSS/add_recipe.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/edit_recipe.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -14,19 +14,28 @@
             <label for="title">Recipe Title:</label>
             <input type="text" id="title" name="title" value="{{ recipe['title'] }}" placeholder="Enter the recipe title" required>
         </div>
+
+        <div class="form-group">
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" value="{{ recipe['username'] }}" readonly>
+        </div>
+
         <div class="form-group">
             <label for="description">Description:</label>
             <textarea id="description" name="description" placeholder="Enter a brief description of the recipe" required>{{ recipe['description'] }}</textarea>
         </div>
+
         <div class="form-group">
             <label for="ingredients">Ingredients:</label>
             <textarea id="ingredients" name="ingredients" placeholder="List all ingredients required" required>{{ recipe['ingredients'] }}</textarea>
         </div>
+
         <div class="form-group">
             <label for="instructions">Instructions:</label>
             <textarea id="instructions" name="instructions" placeholder="Provide step-by-step instructions" required>{{ recipe['instructions'] }}</textarea>
         </div>
-       <div class="form-group">
+
+        <div class="form-group">
             <label for="meal_type">Meal Type:</label>
             <select id="meal_type" name="meal_type" required>
                 <option value="Breakfast" {% if recipe['meal_type'] == 'Breakfast' %}selected{% endif %}>Breakfast</option>
@@ -35,26 +44,30 @@
                 <option value="Snack" {% if recipe['meal_type'] == 'Snack' %}selected{% endif %}>Snack</option>
             </select>
         </div>
+
         <div class="form-group">
             <label for="category">Category:</label>
             <input type="text" id="category" name="category" value="{{ recipe['category'] }}" placeholder="e.g., Vegetarian, Dessert" required>
         </div>
 
-
         <div class="form-group">
             <label for="current-image">Current Image:</label>
-            {% if recipe['image_path'] %}
-            <img src="{{ url_for('static', filename=recipe['image_path']) }}" alt="{{ recipe['title'] }}" class="current-image">
+            {% if recipe.image_path %}
+            <img src="{{ url_for('static', filename=recipe.image_path.replace('static/', '')) }}" alt="{{ recipe.title }}" class="current-image">
             {% else %}
             <p>No image uploaded for this recipe.</p>
             {% endif %}
         </div>
+
         <div class="form-group">
             <label for="image">Upload New Image:</label>
             <input type="file" id="image" name="image" accept="image/*">
         </div>
-        <button type="submit">Save Changes</button>
-        <button type="button" onclick="location.href='{{ url_for('recipes.view_recipe', recipe_id=recipe['id']) }}'">Cancel</button>
+
+        <div class="form-actions">
+            <button type="submit">Save Changes</button>
+            <button type="button" onclick="location.href='{{ url_for('recipes.view_recipe', recipe_id=recipe['id']) }}'">Cancel</button>
+        </div>
     </form>
 </div>
 {% endblock %}

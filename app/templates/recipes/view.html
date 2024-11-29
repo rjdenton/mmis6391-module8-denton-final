@@ -3,20 +3,47 @@
 {% block title %}{{ recipe.title }}{% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='CSS/recipes.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/view_recipe.css') }}">
 {% endblock %}
 
 {% block content %}
-<h2>{{ recipe.title }}</h2>
-<p><strong>Description:</strong> {{ recipe.description }}</p>
-<p><strong>Meal Type:</strong> {{ recipe['meal_type'] }}</p>
-<p><strong>Category:</strong> {{ recipe['category'] }}</p>
-<p><strong>Ingredients:</strong></p>
-<pre>{{ recipe.ingredients }}</pre>
-<p><strong>Instructions:</strong></p>
-<pre>{{ recipe.instructions }}</pre>
-<a href="{{ url_for('recipes.edit_recipe', recipe_id=recipe.id) }}">Edit</a>
-<form action="{{ url_for('recipes.delete_recipe', recipe_id=recipe.id) }}" method="post" style="display:inline;">
-    <button type="submit">Delete</button>
-</form>
+<div class="recipe-container" data-recipe-id="{{ recipe.id }}">
+    <div class="recipe-header">
+        {% if recipe.image_path %}
+        <img src="{{ url_for('static', filename=recipe.image_path.replace('static/', '')) }}" alt="{{ recipe.title }}" class="recipe-image">
+        {% endif %}
+        <h1>{{ recipe.title }}</h1>
+    </div>
+
+    <div class="recipe-details">
+        <p><strong>Author:</strong> {{ recipe['username'] }}</p>
+        <p><strong>Description:</strong> {{ recipe.description }}</p>
+        <p><strong>Meal Type:</strong> {{ recipe['meal_type'] }}</p>
+        <p><strong>Category:</strong> {{ recipe['category'] }}</p>
+
+        <h2>Ingredients:</h2>
+        <pre class="ingredients">{{ recipe.ingredients }}</pre>
+
+        <h2>Instructions:</h2>
+        <pre class="instructions">{{ recipe.instructions }}</pre>
+    </div>
+
+    <div class="recipe-actions">
+        {% if 'user_id' in session %}
+        <form method="post" class="favorite-form">
+            <button type="submit" class="favorite-btn" data-favorited="{{ recipe['is_favorite'] }}">
+                {{ '⭐' if recipe['is_favorite'] else '☆' }}
+            </button>
+        </form>
+        {% endif %}
+        <!-- Edit and Delete Buttons -->
+        <a href="{{ url_for('recipes.edit_recipe', recipe_id=recipe.id) }}" class="btn edit-btn">Edit</a>
+        <form action="{{ url_for('recipes.delete_recipe', recipe_id=recipe.id) }}" method="post" class="delete-form">
+            <button type="submit" class="btn delete-btn">Delete</button>
+        </form>
+    </div>
+</div>
+{% block scripts %}
+<script src="{{ url_for('static', filename='JS/favorites.js') }}"></script>
+{% endblock %}
 {% endblock %}

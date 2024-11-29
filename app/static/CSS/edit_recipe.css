@@ -59,34 +59,30 @@
 }
 
 /* Buttons */
-button {
-    display: block;
+.form-actions button {
     width: 100%;
-    padding: 12px;
-    background: #4CAF50;
+    padding: 10px;
+    margin: 10px 0;
+    background: #3498db;
     color: white;
     font-size: 16px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
-button:hover {
-    background: #45a049;
-    transform: translateY(-2px);
+.form-actions button:hover {
+    background: #2980b9;
+    transform: scale(1.05);
 }
 
-button[type="button"] {
-    background: #f44336;
+.form-actions button[type="button"] {
+    background: #e74c3c;
 }
 
-button[type="button"]:hover {
-    background: #e53935;
-}
-
-button:focus {
-    outline: none;
+.form-actions button[type="button"]:hover {
+    background: #c0392b;
 }
 
 /* Responsive Design */
@@ -100,12 +96,11 @@ button:focus {
     }
 }
 
-/* Dropdown Styling */
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    background: white;
+/* Author Field Styling */
+.form-group input[readonly] {
+    background-color: #f0f0f0;
+    color: #555;
+    cursor: not-allowed;
+    border: 1px solid #ccc;
+    font-style: italic;
 }

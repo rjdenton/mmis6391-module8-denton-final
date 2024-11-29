@@ -36,9 +36,22 @@ def list_recipes():
 def view_recipe(recipe_id):
     """View details of a single recipe."""
     connection = get_db()
-    query = "SELECT * FROM recipes WHERE id = %s"
+    user_id = session.get('user_id')  # Get logged-in user ID
+
+    # Fetch the recipe details
+    query = """
+        SELECT recipes.*, 
+               users.username,
+               EXISTS(
+                   SELECT 1 FROM favorites 
+                   WHERE favorites.recipe_id = recipes.id AND favorites.user_id = %s
+               ) AS is_favorite
+        FROM recipes
+        JOIN users ON recipes.user_id = users.id
+        WHERE recipes.id = %s
+    """
     with connection.cursor() as cursor:
-        cursor.execute(query, (recipe_id,))
+        cursor.execute(query, (user_id, recipe_id))
         recipe = cursor.fetchone()
 
     if not recipe:
@@ -46,6 +59,8 @@ def view_recipe(recipe_id):
         return redirect(url_for('recipes.list_recipes'))
 
     return render_template('recipes/view.html', recipe=recipe)
+
+
 
 
 @recipes.route('/recipes/add', methods=['GET', 'POST'])
@@ -90,14 +105,28 @@ def add_recipe():
 @recipes.route('/recipes/edit/<int:recipe_id>', methods=['GET', 'POST'])
 def edit_recipe(recipe_id):
     """Edit an existing recipe."""
+    if 'user_id' not in session:
+        flash("You must be logged in to edit a recipe.", "danger")
+        return redirect(url_for('users.login'))
+
     connection = get_db()
-    query = "SELECT * FROM recipes WHERE id = %s"
+    query = """
+        SELECT recipes.*, users.username
+        FROM recipes
+        JOIN users ON recipes.user_id = users.id
+        WHERE recipes.id = %s
+    """
     with connection.cursor() as cursor:
         cursor.execute(query, (recipe_id,))
         recipe = cursor.fetchone()
 
     if not recipe:
         flash("Recipe not found.", "danger")
+        return redirect(url_for('recipes.list_recipes'))
+
+    # Check if the logged-in user is the owner of the recipe
+    if session['user_id'] != recipe['user_id']:
+        flash("You are not authorized to edit this recipe.", "danger")
         return redirect(url_for('recipes.list_recipes'))
 
     if request.method == 'POST':
@@ -131,26 +160,38 @@ def edit_recipe(recipe_id):
 
     return render_template('recipes/edit.html', recipe=recipe)
 
-
 @recipes.route('/recipes/delete/<int:recipe_id>', methods=['POST'])
 def delete_recipe(recipe_id):
     """Delete an existing recipe."""
-    connection = get_db()
-    user_id = session.get('user_id')
-
-    if not user_id:
+    if 'user_id' not in session:
         flash("You must be logged in to delete a recipe.", "danger")
         return redirect(url_for('users.login'))
 
-    query = "DELETE FROM recipes WHERE id = %s AND user_id = %s"
+    connection = get_db()
+
+    # Fetch the recipe to check ownership
+    query = "SELECT * FROM recipes WHERE id = %s"
     with connection.cursor() as cursor:
-        cursor.execute(query, (recipe_id, user_id))
+        cursor.execute(query, (recipe_id,))
+        recipe = cursor.fetchone()
+
+    if not recipe:
+        flash("Recipe not found.", "danger")
+        return redirect(url_for('recipes.list_recipes'))
+
+    # Check if the logged-in user is the owner of the recipe
+    if session['user_id'] != recipe['user_id']:
+        flash("You are not authorized to delete this recipe.", "danger")
+        return redirect(url_for('recipes.list_recipes'))
+
+    # Delete the recipe
+    delete_query = "DELETE FROM recipes WHERE id = %s"
+    with connection.cursor() as cursor:
+        cursor.execute(delete_query, (recipe_id,))
     connection.commit()
 
     flash("Recipe deleted successfully!", "success")
     return redirect(url_for('recipes.list_recipes'))
-
-from flask import jsonify, request
 
 @recipes.route('/recipes/favorite/<int:recipe_id>', methods=['POST'])
 def toggle_favorite(recipe_id):
@@ -182,6 +223,60 @@ def toggle_favorite(recipe_id):
         connection.commit()
         return jsonify({"message": "Favorited", "is_favorited": True})
 
+@recipes.route('/recipes/search')
+def search_recipes():
+    """Search for recipes based on a query."""
+    user_query = request.args.get('query', '').strip()  # User input
+    connection = get_db()
 
+    if not user_query:
+        flash("Please enter a search term.", "warning")
+        return redirect(url_for('recipes.list_recipes'))
+
+    search_query = f"%{user_query}%"
+    sql_query = """
+        SELECT recipes.id, recipes.title, recipes.description, recipes.image_path,
+               recipes.meal_type, recipes.category, users.username
+        FROM recipes
+        JOIN users ON recipes.user_id = users.id
+        WHERE recipes.title LIKE %s OR recipes.description LIKE %s OR recipes.category LIKE %s
+    """
+    with connection.cursor() as cursor:
+        cursor.execute(sql_query, (search_query, search_query, search_query))
+        results = cursor.fetchall()
+
+    # Pass the user's query to the template
+    return render_template('recipes/search_results.html', query=user_query, results=results)
+
+@recipes.route('/recipes/filter')
+def filter_recipes():
+    """Filter recipes by meal type."""
+    meal_type = request.args.get('meal_type', '').strip()
+    connection = get_db()
+
+    if meal_type:
+        query = """
+            SELECT recipes.id, recipes.title, recipes.description, recipes.image_path,
+                   recipes.meal_type, recipes.category, users.username
+            FROM recipes
+            JOIN users ON recipes.user_id = users.id
+            WHERE recipes.meal_type = %s
+        """
+        with connection.cursor() as cursor:
+            cursor.execute(query, (meal_type,))
+            recipes = cursor.fetchall()
+    else:
+        # If no filter, return all recipes
+        query = """
+            SELECT recipes.id, recipes.title, recipes.description, recipes.image_path,
+                   recipes.meal_type, recipes.category, users.username
+            FROM recipes
+            JOIN users ON recipes.user_id = users.id
+        """
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            recipes = cursor.fetchall()
+
+    return render_template('recipes/list.html', recipes=recipes)
 
 
