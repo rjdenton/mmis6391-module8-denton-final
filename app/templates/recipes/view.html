@@ -38,9 +38,11 @@
         {% endif %}
         <!-- Edit and Delete Buttons -->
         <a href="{{ url_for('recipes.edit_recipe', recipe_id=recipe.id) }}" class="btn edit-btn">Edit</a>
-        <form action="{{ url_for('recipes.delete_recipe', recipe_id=recipe.id) }}" method="post" class="delete-form">
+        <form action="{{ url_for('recipes.delete_recipe', recipe_id=recipe['id']) }}" method="post" class="delete-form">
             <button type="submit" class="btn delete-btn">Delete</button>
         </form>
+
+
     </div>
 </div>
 {% block scripts %}

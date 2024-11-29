@@ -163,6 +163,8 @@ def edit_recipe(recipe_id):
 @recipes.route('/recipes/delete/<int:recipe_id>', methods=['POST'])
 def delete_recipe(recipe_id):
     """Delete an existing recipe."""
+    print(f"Attempting to delete recipe ID: {recipe_id}")
+
     if 'user_id' not in session:
         flash("You must be logged in to delete a recipe.", "danger")
         return redirect(url_for('users.login'))
@@ -181,7 +183,7 @@ def delete_recipe(recipe_id):
 
     # Check if the logged-in user is the owner of the recipe
     if session['user_id'] != recipe['user_id']:
-        flash("You are not authorized to delete this recipe.", "danger")
+        flash("You are not authorized to delete this recipe. Only the recipe's creator can delete it.", "danger")
         return redirect(url_for('recipes.list_recipes'))
 
     # Delete the recipe

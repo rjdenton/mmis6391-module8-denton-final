@@ -9,25 +9,32 @@
 </head>
 <body>
     <header>
-    <nav class="navbar">
-        <div class="logo">
-            <a href="{{ url_for('index') }}">🍴 RecipeBook</a>
-        </div>
-        <ul class="nav-links">
-            <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li><a href="{{ url_for('recipes.list_recipes') }}">Recipes</a></li>
-            {% if 'user_id' in session %}
-                <li><a href="{{ url_for('favorites.list_favorites') }}">Favorites</a></li>
-                <li><a href="{{ url_for('users.profile') }}">Profile</a></li>
-                <li><a href="{{ url_for('users.logout') }}">Logout</a></li>
-            {% else %}
-                <li><a href="{{ url_for('users.login') }}">Login</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-</header>
-
-
+        <nav class="navbar">
+            <div class="logo">
+                <a href="{{ url_for('index') }}">🍴 RecipeBook</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('recipes.list_recipes') }}">Recipes</a></li>
+                {% if 'user_id' in session %}
+                    <li><a href="{{ url_for('favorites.list_favorites') }}">Favorites</a></li>
+                    <li><a href="{{ url_for('users.profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('users.logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('users.login') }}">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="flash-message {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
     <main>
         {% block content %}
         <!-- Page-specific content will go here -->
