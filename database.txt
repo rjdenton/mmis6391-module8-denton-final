@@ -1,0 +1,34 @@
+Table users {
+  id int [pk, increment]
+  username varchar(255)
+  password varchar(255)
+  email varchar(255)
+  bio text
+  first_name varchar(255)
+  last_name varchar(255)
+}
+
+Table recipes {
+  id int [pk, increment]
+  user_id int [ref: > users.id]
+  title varchar(255)
+  description text
+  ingredients text
+  instructions text
+  created_at timestamp
+  updated_at timestamp
+  image_path varchar(255)
+  meal_type enum('Breakfast', 'Lunch', 'Dinner', 'Snack')
+  category varchar(255)
+}
+
+Table favorites {
+  id int [pk, increment]
+  user_id int [ref: > users.id]
+  recipe_id int [ref: > recipes.id]
+  created_at timestamp
+}
+
+Ref: recipes.user_id > users.id
+Ref: favorites.user_id > users.id
+Ref: favorites.recipe_id > recipes.id
