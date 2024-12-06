@@ -28,6 +28,22 @@
         <pre class="instructions">{{ recipe.instructions }}</pre>
     </div>
 
+    <div class="nutrition-details">
+        {% if nutrition_data %}
+        <h2>Nutritional Information:</h2>
+        <ul>
+            <li><strong>Calories:</strong> {{ nutrition_data['calories'] }}</li>
+            {% if nutrition_data['totalNutrients'] %}
+            <li><strong>Total Fat:</strong> {{ nutrition_data['totalNutrients']['FAT']['quantity'] | round(2) }} {{ nutrition_data['totalNutrients']['FAT']['unit'] }}</li>
+            <li><strong>Protein:</strong> {{ nutrition_data['totalNutrients']['PROCNT']['quantity'] | round(2) }} {{ nutrition_data['totalNutrients']['PROCNT']['unit'] }}</li>
+            <li><strong>Carbohydrates:</strong> {{ nutrition_data['totalNutrients']['CHOCDF']['quantity'] | round(2) }} {{ nutrition_data['totalNutrients']['CHOCDF']['unit'] }}</li>
+            {% endif %}
+        </ul>
+        {% else %}
+        <p>Nutritional information is unavailable for this recipe.</p>
+        {% endif %}
+    </div>
+
     <div class="recipe-actions">
         {% if 'user_id' in session %}
         <form method="post" class="favorite-form">

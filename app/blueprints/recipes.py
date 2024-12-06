@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from app.db_connect import get_db
 from werkzeug.utils import secure_filename
 import os
+import requests
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -32,9 +33,20 @@ def list_recipes():
 
     return render_template('recipes/list.html', recipes=recipes)
 
+# Function to ensure all ingredients have a default quantity and unit
+def format_ingredients(ingredients):
+    formatted = []
+    for ingredient in ingredients:
+        ingredient = ingredient.strip()
+        # If no quantity is specified, default to "1 unit"
+        if not any(char.isdigit() for char in ingredient):
+            ingredient = f"1 unit {ingredient}"
+        formatted.append(ingredient)
+    return formatted
+
 @recipes.route('/recipes/<int:recipe_id>')
 def view_recipe(recipe_id):
-    """View details of a single recipe."""
+    """View details of a single recipe and fetch nutritional information."""
     connection = get_db()
     user_id = session.get('user_id')  # Get logged-in user ID
 
@@ -58,10 +70,45 @@ def view_recipe(recipe_id):
         flash("Recipe not found.", "danger")
         return redirect(url_for('recipes.list_recipes'))
 
-    return render_template('recipes/view.html', recipe=recipe)
+    # Extract and format ingredients for the API
+    ingredients_list = recipe['ingredients'].split(',')  # Split comma-separated string
+    formatted_ingredients = format_ingredients(ingredients_list)
+    print("Formatted Ingredients:", formatted_ingredients)
 
+    # Payload for the Edamam API
+    payload = {
+        "title": recipe['title'],
+        "ingr": formatted_ingredients
+    }
 
+    # Edamam API configuration
+    APP_ID = 'fee31b76'  # Replace with your app ID
+    APP_KEY = '9e2335761d271c35e04b500915aa60ea'  # Replace with your app key
+    API_URL = 'https://api.edamam.com/api/nutrition-details'
 
+    # Payload for API
+    payload = {
+        "title": recipe['title'],
+        "ingr": formatted_ingredients
+    }
+
+    # Fetch nutritional data
+    try:
+        response = requests.post(
+            f'{API_URL}?app_id={APP_ID}&app_key={APP_KEY}',
+            json=payload
+        )
+        if response.status_code == 200:
+            nutrition_data = response.json()
+            print("Nutrition Data:", nutrition_data)
+        else:
+            print(f"API Error {response.status_code}: {response.text}")
+            nutrition_data = None  # Handle API errors gracefully
+    except Exception as e:
+        print(f"Error fetching nutritional data: {e}")
+        nutrition_data = None
+
+    return render_template('recipes/view.html', recipe=recipe, nutrition_data=nutrition_data)
 
 @recipes.route('/recipes/add', methods=['GET', 'POST'])
 def add_recipe():
