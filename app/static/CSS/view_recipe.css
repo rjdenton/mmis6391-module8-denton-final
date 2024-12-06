@@ -110,3 +110,74 @@
 .favorite-btn:hover {
     transform: scale(1.3);
 }
+
+.nutrition-details {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.nutrition-details h2 {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.nutrition-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+.nutrition-table th, .nutrition-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.nutrition-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.nutrition-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.nutrition-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.nutrition-details {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.nutrition-details h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.nutrition-summary-table, .nutrition-detailed-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+.nutrition-summary-table th, .nutrition-summary-table td,
+.nutrition-detailed-table th, .nutrition-detailed-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.nutrition-summary-table th, .nutrition-detailed-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
